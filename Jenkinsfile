@@ -1,19 +1,21 @@
 pipeline {
     agent none
+
+    parameters {
+        string(name: 'commitId', defaultValue: 'HEAD', description: 'Enter a commit id')
+    }
+
     stages {
         stage('docker agent test') {
-	          agent { docker { image 'maven:3.8.4-openjdk-11-slim' } }
+            agent { docker { image 'maven:3.8.4-openjdk-11-slim' } }
             steps {
                 sh 'mvn --version'
             }
         }
-	      stage('work with remote git repo - move branch to specified commit id') {
-		        agent any
-
-    		    parameters {
-        		    string(name: 'commitId', defaultValue: 'HEAD', description: 'Enter a commit id')
-    		    }
-		        stages {
+        stage('work with remote git repo - move branch to specified commit id') {
+            agent any
+                
+            stages {
                 stage('Starting') {
                     steps {
                         echo 'Start...'
